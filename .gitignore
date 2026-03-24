@@ -1,0 +1,30 @@
+# R / RStudio
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+
+# Data files
+*.rds
+*.RDS
+*.csv
+*.xlsx
+*.sav
+
+# Output files
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*_outputs/
+output/
+outputs/
+
+# Local folders
+data/
+raw_data/
+derived_data/
+
+# OS / misc
+.DS_Store
+Thumbs.db
