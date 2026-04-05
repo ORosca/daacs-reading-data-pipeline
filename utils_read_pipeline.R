@@ -195,6 +195,35 @@ rename_item_columns_to_final_qid <- function(df, mapping_df) {
   df %>% rename(!!!rename_vec)
 }
 
+load_llm_repair_table <- function(llm_patch_csv) {
+  if (!file.exists(llm_patch_csv)) {
+    return(NULL)
+  }
+  
+  llm <- readr::read_csv(llm_patch_csv, show_col_types = FALSE)
+  
+  required <- c("source_name", "question_id", "approved_QID")
+  missing <- setdiff(required, names(llm))
+  if (length(missing) > 0) {
+    stop(
+      sprintf(
+        "LLM patch file is missing required columns: %s",
+        paste(missing, collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+  
+  llm %>%
+    transmute(
+      source_name = as.character(source_name),
+      question_id = as.character(question_id),
+      QID = as.character(approved_QID),
+      repair_source = "llm_human_review"
+    ) %>%
+    distinct(source_name, question_id, .keep_all = TRUE)
+}
+
 # ------------------------------------------------------------
 # Filtering helpers
 # ------------------------------------------------------------
